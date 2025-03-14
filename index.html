@@ -12,7 +12,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
-  <body class="w-11/12 mx-auto">
+  <body class="w-11/12 mx-auto pb-12">
     <!-- heading start -->
     <header>
       <!-- navigation start -->
@@ -33,7 +33,9 @@
       <!-- Categories section start -->
       <section id="category-section" class="flex justify-center gap-3 py-8">
         <div>
-          <button class="btn bg-[#FF1F3D] text-white">All</button>
+          <button onclick="fetchVideos()" class="btn bg-[#FF1F3D] text-white">
+            All
+          </button>
         </div>
       </section>
       <!-- Categories section end -->

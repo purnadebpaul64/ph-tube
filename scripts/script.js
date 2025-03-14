@@ -12,13 +12,21 @@ function fetchVideos() {
     .then((data) => displayVideos(data.videos));
 }
 
+// fetcing category videos
+function categoryVideos(id) {
+  const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => displayVideos(data.category));
+}
+
 // Display Category
 function displayCategories(permCategories) {
   const categorySection = document.getElementById("category-section");
   for (let cat of permCategories) {
     const categoryButtonDiv = document.createElement("div");
     categoryButtonDiv.innerHTML = `
-        <button class="btn hover:text-white hover:bg-[#FF1F3D]">${cat.category}</button>
+        <button onclick="categoryVideos(${cat.category_id})" class="btn hover:text-white hover:bg-[#FF1F3D]">${cat.category}</button>
         `;
     categorySection.append(categoryButtonDiv);
   }
@@ -27,16 +35,24 @@ function displayCategories(permCategories) {
 // Display Videos
 const displayVideos = (permVideos) => {
   const videoContainer = document.getElementById("video-container");
+  videoContainer.innerHTML = ``;
+  if (permVideos.length == 0) {
+    videoContainer.innerHTML = `
+    <div class="col-span-full flex flex-col items-center py-20">
+        <img src="./assets/Icon.png" alt="" />
+        <h2 class="text-3xl font-bold text-center mt-4">
+          Oops!! Sorry, There is no <br />content here
+        </h2>
+      </div>
+    `;
+  }
   for (const video of permVideos) {
-    //
-
+    //time calculation
     function convertSeconds(seconds) {
       const hours = Math.floor(seconds / 3600);
       const minutes = Math.floor((seconds % 3600) / 60);
-
       return `${hours} hrs ${minutes} min`;
     }
-
     //
     const videoCard = document.createElement("div");
     videoCard.innerHTML = `
