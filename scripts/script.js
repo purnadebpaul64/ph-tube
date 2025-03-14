@@ -1,3 +1,11 @@
+// remove active class for category button
+function removeActiveClass() {
+  const activeButtons = document.getElementsByClassName("active");
+  for (let btn of activeButtons) {
+    btn.classList.remove("active");
+  }
+}
+
 // fetching categories data
 function fetchCategories() {
   fetch("https://openapi.programming-hero.com/api/phero-tube/categories")
@@ -9,7 +17,12 @@ function fetchCategories() {
 function fetchVideos() {
   fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
     .then((res) => res.json())
-    .then((data) => displayVideos(data.videos));
+    .then((data) => {
+      removeActiveClass();
+      const clickedButton = document.getElementById("all-active");
+      clickedButton.classList.add("active");
+      displayVideos(data.videos);
+    });
 }
 
 // fetcing category videos
@@ -17,7 +30,12 @@ function categoryVideos(id) {
   const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
   fetch(url)
     .then((res) => res.json())
-    .then((data) => displayVideos(data.category));
+    .then((data) => {
+      removeActiveClass();
+      const clickedButton = document.getElementById(`btn-${id}`);
+      clickedButton.classList.add("active");
+      displayVideos(data.category);
+    });
 }
 
 // Display Category
@@ -26,7 +44,7 @@ function displayCategories(permCategories) {
   for (let cat of permCategories) {
     const categoryButtonDiv = document.createElement("div");
     categoryButtonDiv.innerHTML = `
-        <button onclick="categoryVideos(${cat.category_id})" class="btn hover:text-white hover:bg-[#FF1F3D]">${cat.category}</button>
+        <button id="btn-${cat.category_id}" onclick="categoryVideos(${cat.category_id})" class="btn hover:text-white hover:bg-[#FF1F3D]">${cat.category}</button>
         `;
     categorySection.append(categoryButtonDiv);
   }
@@ -45,6 +63,7 @@ const displayVideos = (permVideos) => {
         </h2>
       </div>
     `;
+    return;
   }
   for (const video of permVideos) {
     //time calculation
