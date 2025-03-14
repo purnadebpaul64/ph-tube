@@ -38,6 +38,14 @@ function categoryVideos(id) {
     });
 }
 
+// fetcing video details
+function fetchVideoDetails(videoId) {
+  const url = `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => displayVideoDetalis(data.video));
+}
+
 // Display Category
 function displayCategories(permCategories) {
   const categorySection = document.getElementById("category-section");
@@ -124,11 +132,32 @@ const displayVideos = (permVideos) => {
             <p class="text-slate-500 text-sm">${video.others.views} views</p>
           </div>
         </div>
+        <button onclick=fetchVideoDetails('${
+          video.video_id
+        }') class="btn btn-block mt-4 py-0.5">Show Details</button>
       </div>
 `;
     videoContainer.append(videoCard);
   }
 };
 
+// Display Video Details
+function displayVideoDetalis(video) {
+  document.getElementById("video_details").showModal();
+  const detailContiner = document.getElementById("detail-continer");
+  detailContiner.innerHTML = `
+  <div class="card bg-base-100 image-full shadow-sm">
+  <figure>
+    <img
+      src="${video.thumbnail}"
+      alt="thumbnail" />
+  </figure>
+  <div class="card-body flex flex-col justify-center items-center">
+    <h2 class="text-xl font-semibold">${video.title}</h2>
+    <p class="text-center">${video.description}</p>
+  </div>
+</div>
+  `;
+}
 fetchCategories();
 fetchVideos();
